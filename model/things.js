@@ -1,29 +1,24 @@
 const mongoose = require("mongoose");
 
-const thingsSchema = mongoose.Schema({
-  title: {type: String, required: true},
-  description: {type: String, required: true},
-  imageUrl: {type: String, required: true},
-  userId: {type: String, required: true},
-  price: {type: Number, required: true},
+const courseSchema = mongoose.Schema({
+  name: String,
+  author: String,
+  tags: [String],
+  date: Date,
+  isPublished: Boolean,
+  price: Number,
 });
 
-const Thing = mongoose.model("Thing", thingsSchema);
-async function createThing() {
-  const thing = new Thing({
-    title: "Banana",
-    description: "Eat everyday",
-    imageUrl: "http://banana.com/",
-    userId: "20",
-    price: 2131,
-  });
-  const result = await thing.save();
-  
-}
-createThing();
+const Course = mongoose.model("Course", courseSchema);
 
-async function getThing(){
-    const thing = await Thing.count()
-    console.log(thing);
+async function getCourses() {
+  return await Course.find({isPublished: true, tags: "backend"})
+    .sort({name: 1})
+    .select({name: 1, author: 1});
 }
-getThing()
+async function run() {
+  const courses = await getCourses();
+  console.log(courses);
+}
+
+run();
