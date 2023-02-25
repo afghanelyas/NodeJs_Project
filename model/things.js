@@ -4,7 +4,15 @@ const courseSchema = mongoose.Schema({
   name: {type: String, required: true, minlength: 5, maxlength: 255},
   category: {type: String, required: true, eunm: ["web", "mobile", "network"]},
   author: String,
-  tags: [String],
+  tags: {
+    type: Array,
+    validate: {
+      validator: function (v) {
+        return v && v.length > 0;
+      },
+      message: "A course should have at least one tag.",
+    },
+  },
   date: Date,
   isPublished: Boolean,
   price: {
@@ -12,6 +20,8 @@ const courseSchema = mongoose.Schema({
     required: function () {
       return this.isPublished;
     },
+    min: 10,
+    max: 100,
   },
 });
 
@@ -20,9 +30,9 @@ const Course = mongoose.model("Course", courseSchema);
 async function createCourse() {
   const course = new Course({
     name: "Python Course",
-    category: "-",
+    category: "web",
     author: "Elyas Afghan",
-    tags: ["Python", "backend"],
+    tags: null,
     isPublished: true,
     price: 15,
   });
