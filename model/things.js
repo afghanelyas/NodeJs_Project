@@ -10,14 +10,24 @@ const courseSchema = mongoose.Schema({
 });
 
 const Course = mongoose.model("Course", courseSchema);
-async function getCourses() {
-  return await Course.find({isPublished: true, tags: "backend"})
-    .sort({name: 1})
-    .select({name: 1, author: 1});
-}
-async function run() {
-  const courses = await getCourses();
+
+// how to update the document
+async function updateCourse(id) {
+  const courses = await Course.findByIdAndUpdate(id, {
+    $set: {
+      author: "Elyas Afghan",
+      isPublished: false,
+    },
+  });
   console.log(courses);
 }
+updateCourse("5a68fdc3615eda645bc6bdec");
 
-run();
+// how to remove the document
+
+async function removeCourse(id) {
+  // const result = await Course.deleteOne({_id: id});
+  const course = await Course.findByIdAndRemove(id);
+  console.log(course);
+}
+removeCourse("5a68fdc3615eda645bc6bdec");
