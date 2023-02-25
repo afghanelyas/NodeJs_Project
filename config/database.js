@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-require("dotenv").config();
+
+
 mongoose.set("strictQuery", true);
 
 exports.connect = () => {
@@ -16,3 +17,4 @@ exports.connect = () => {
       process.exit(1);
     });
 };
+

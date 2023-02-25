@@ -10,7 +10,6 @@ const courseSchema = mongoose.Schema({
 });
 
 const Course = mongoose.model("Course", courseSchema);
-
 async function getCourses() {
   return await Course.find({isPublished: true, tags: "backend"})
     .sort({name: 1})
