@@ -2,7 +2,13 @@ const mongoose = require("mongoose");
 
 const courseSchema = mongoose.Schema({
   name: {type: String, required: true, minlength: 5, maxlength: 255},
-  category: {type: String, required: true, eunm: ["web", "mobile", "network"]},
+  category: {
+    type: String,
+    required: true,
+    eunm: ["web", "mobile", "network"],
+    lowercase: true,
+    uppercase: true,
+  },
   author: String,
   tags: {
     type: Array,
@@ -12,7 +18,7 @@ const courseSchema = mongoose.Schema({
           setTimeout(() => {
             const result = v && v.length > 0;
             resolve(result);
-          }, 4000);
+          }, 1000);
         });
       },
       message: "A course should have at least one tag.",
@@ -27,6 +33,8 @@ const courseSchema = mongoose.Schema({
     },
     min: 10,
     max: 100,
+    get: (v) => Math.round(v),
+    set: (v) => Math.round(v),
   },
 });
 
@@ -35,11 +43,11 @@ const Course = mongoose.model("Course", courseSchema);
 async function createCourse() {
   const course = new Course({
     name: "Python Course",
-    category:" ",
+    category: "WEb",
     author: "Elyas Afghan",
-    tags: [],
+    tags: ["php", "javascript"],
     isPublished: true,
-    price: 15,
+    price: 15.6,
   });
   try {
     const result = await course.save();
