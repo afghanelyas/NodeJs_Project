@@ -1,19 +1,26 @@
 const mongoose = require("mongoose");
 
 const courseSchema = mongoose.Schema({
-  name: {type: String, required: true},
+  name: {type: String, required: true, minlength: 5, maxlength: 255},
+  category: {type: String, required: true, eunm: ["web", "mobile", "network"]},
   author: String,
   tags: [String],
   date: Date,
   isPublished: Boolean,
-  price: Number,
+  price: {
+    type: Number,
+    required: function () {
+      return this.isPublished;
+    },
+  },
 });
 
 const Course = mongoose.model("Course", courseSchema);
 
 async function createCourse() {
   const course = new Course({
-    // name: "Python Course",
+    name: "Python Course",
+    category: "-",
     author: "Elyas Afghan",
     tags: ["Python", "backend"],
     isPublished: true,
@@ -36,7 +43,7 @@ async function updateCourse(id) {
       isPublished: false,
     },
   });
-  console.log(courses);
+  // console.log(courses);
 }
 // updateCourse("5a68fdc3615eda645bc6bdec");
 
@@ -45,6 +52,6 @@ async function updateCourse(id) {
 async function removeCourse(id) {
   // const result = await Course.deleteOne({_id: id});
   const course = await Course.findByIdAndRemove(id);
-  console.log(course);
+  // console.log(course);
 }
 // removeCourse("5a68fdc3615eda645bc6bdec");
