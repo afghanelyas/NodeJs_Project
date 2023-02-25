@@ -8,12 +8,17 @@ const courseSchema = mongoose.Schema({
     type: Array,
     validate: {
       validator: function (v) {
-        return v && v.length > 0;
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            const result = v && v.length > 0;
+            resolve(result);
+          }, 4000);
+        });
       },
       message: "A course should have at least one tag.",
     },
   },
-  date: Date,
+  date: {type: Date, default: Date.now()},
   isPublished: Boolean,
   price: {
     type: Number,
@@ -32,7 +37,7 @@ async function createCourse() {
     name: "Python Course",
     category: "web",
     author: "Elyas Afghan",
-    tags: null,
+    tags: [],
     isPublished: true,
     price: 15,
   });
