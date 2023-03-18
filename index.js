@@ -1,3 +1,3 @@
 require("dotenv").config();
-require("./config/database").connect();
-require("./model/things");
+// require("./model/embeding").connect();
+require("./model/Connect").connect();
